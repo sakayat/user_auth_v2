@@ -1,5 +1,8 @@
-const authControl = (req, res) => {
-    res.send("hello")
-}
+const User = require("../models/userModels");
 
-module.exports = authControl;
+const signUp = async (req, res, next) => {
+  const newUser = await User.create(req.body);
+  res.status(201).json(newUser);
+};
+
+module.exports = { signUp };

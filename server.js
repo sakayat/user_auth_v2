@@ -12,6 +12,9 @@ app.listen(port, () => {
     console.log(`server is listening on the ${port}`)
 })
 
+// middleware
+app.use(express.json())
+
 // route
 app.use("/api/user", authRouter)
 
