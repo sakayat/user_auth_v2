@@ -3,7 +3,7 @@ const express = require("express");
 const connectDB = require("./connectDB");
 const app = express()
 const port = process.env.PORT
-const userRoutes = require("./routers/router")
+const authRouter = require("./routers/authRouter")
 
 // connect db
 connectDB()
@@ -13,5 +13,5 @@ app.listen(port, () => {
 })
 
 // route
-app.use("/user", userRoutes)
+app.use("/api/user", authRouter)
 
