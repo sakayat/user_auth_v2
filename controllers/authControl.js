@@ -61,7 +61,20 @@ const checkPermission = async (req,res,next) => {
   next();
 }
 
-module.exports = { signUp, signIn, protect, checkPermission };
+const forgetPassword = async (req,res,next) => {
+  const user = await User.findOne({email: req.body.email})
+  if (!user) {
+    return res.status(403).json("we could not find the user email");
+  }
+  const resetToken = user.createResetPasswordToken()
+  await user.save({validateBeforeSave: false})
+}
+
+const resetPassword = (req,res,next) => {
+
+}
+
+module.exports = { signUp, signIn, protect, forgetPassword,resetPassword};
 
 
 
