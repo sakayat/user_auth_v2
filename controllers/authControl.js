@@ -41,4 +41,17 @@ const signIn = async (req, res) => {
   }
 };
 
-module.exports = { signUp, signIn };
+const protect  = async (req,res, next) => {
+  const testToken = req.headers.authorization;
+  let token;
+  if(testToken.startsWith("token")){
+    token = testToken.split(" ")[1]
+  }
+  if(!token) return res.json("token invalid")
+  jwt.verify(token, process.env.JWT_SECRET);
+  next();
+}
+
+module.exports = { signUp, signIn, protect };
+
+

@@ -4,7 +4,7 @@ const connectDB = require("./connectDB");
 const app = express()
 const port = process.env.PORT
 const authRouter = require("./routers/authRouter")
-
+const movieRouter = require("./routers/movieRouter")
 // connect db
 connectDB()
 
@@ -17,4 +17,5 @@ app.use(express.json())
 
 // route
 app.use("/api/user", authRouter)
+app.use("/api", movieRouter)
 
