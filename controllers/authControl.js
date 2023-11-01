@@ -41,17 +41,29 @@ const signIn = async (req, res) => {
   }
 };
 
-const protect  = async (req,res, next) => {
-  const testToken = req.headers.authorization;
+const protect = async (req, res, next) => {
+  const userToken = req.headers.authorization;
   let token;
-  if(testToken.startsWith("token")){
-    token = testToken.split(" ")[1]
+  if (userToken.startsWith("Bearer")) {
+    token = userToken.split(" ")[1];
   }
-  if(!token) return res.json("token invalid")
-  jwt.verify(token, process.env.JWT_SECRET);
+  if (!token) return res.json("token invalid");
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(decoded);
+  const user = await User.findById(decoded.id);
+  if(!user) return res.status(403).json({message: "user token not exits"})
+  req.user = user;
+  next();
+};
+
+const checkPermission = async (req,res,next) => {
+  if(req.user.role !== "admin") return res.status(403).json({message: "you are not permission on the route"})
   next();
 }
 
-module.exports = { signUp, signIn, protect };
+module.exports = { signUp, signIn, protect, checkPermission };
+
+
+
 
 
